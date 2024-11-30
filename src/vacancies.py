@@ -18,20 +18,12 @@ class Vacancies:
         self.__salary = self.__validate(salary)
         self.__description = description
         self.__requirements = requirements
-        dict_vacancies = {
-            name: self.__name,
-            url: self.__url,
-            salary: self.__salary,
-            description: self.__description,
-            requirements: self.__requirements
-        }
-        self.__vacancies_list.append(dict_vacancies)
 
     @staticmethod
     def __validate(salary):
         """Метод валидации зарплаты"""
 
-        if salary is None:
+        if salary is None or salary == "Зарплата не указана":
             return {"from": 0, "to": 0}
         else:
             return {"from": salary.get("from"), "to": salary.get("to"), "currency": salary.get("currency")}
@@ -47,6 +39,10 @@ class Vacancies:
             avg_self_salary = (self.__salary.get("from") + self.__salary.get("to")) // 2
             avg_other_salary = (other.__salary.get("from") + other.__salary.get("to")) // 2
             return avg_self_salary >= avg_other_salary
+
+    def __str__(self):
+        return (f"{self.__name} - {self.__url}. Зарплата: {self.__salary}. Описание: {self.__description}. "
+                f"Требования: {self.__requirements}.")
 
     @property
     def name(self):
@@ -69,10 +65,6 @@ class Vacancies:
         return self.__requirements
 
 
-if __name__ == "__main__":
-    vac1 = Vacancies("Тестировщик", "https://api.hh.ru/areas/26", {"from": 0, "to": 0, "currency": "RUB"}, "Какое-то описание", "Какие-то требования")
-    print(vac1.name)
-    print(vac1.url)
-    print(vac1.salary)
-    print(vac1.description)
-    print(vac1.requirements)
+# if __name__ == "__main__":
+#     vac1 = Vacancies("Тестировщик", "https://api.hh.ru/areas/26", {"from": 0, "to": 0, "currency": "RUB"}, "Какое-то описание", "Какие-то требования")
+#     print(vac1)
