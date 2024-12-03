@@ -12,22 +12,22 @@ class HHApi(BaseApi):
         self.__url = 'https://api.hh.ru/vacancies'
         self.__headers = {'User-Agent': 'HH-User-Agent'}
         self.__params = {'text': '', 'page': 0, 'per_page': 100}
-        self.vacancies = []
+        self.__vacancies = []
         super().__init__(file_worker)
 
-    def load_vacancies(self, keyword):
+    def load_vacancies(self, keyword: str) -> list:
         """Метод загрузки данных вакансий из API сервиса"""
 
         self.__params['text'] = keyword
         while self.__params.get('page') != 20:
             response = requests.get(self.__url, headers=self.__headers, params=self.__params)
             vacancies = response.json()['items']
-            self.vacancies.extend(vacancies)
+            self.__vacancies.extend(vacancies)
             self.__params['page'] += 1
 
-        return self.vacancies
+        return self.__vacancies
 
 
-if __name__ == "__main__":
-    hh = HHApi(file_worker="../data/vacancies.json")
-    print(hh.load_vacancies("Тестировщик"))
+# if __name__ == "__main__":
+#     hh = HHApi(file_worker="../data/vacancies.json")
+#     print(hh.load_vacancies("Тестировщик"))

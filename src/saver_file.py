@@ -8,45 +8,52 @@ from src.base_file_saver import BaseFileSaver
 class JSONSaver(BaseFileSaver):
     """Класс для работы с файлом JSON"""
 
-    def __init__(self, path: str = "../data/json_vacancies.json"):
-        self.path = os.path.abspath(path)
-        if not os.path.exists(self.path):
-            with open(self.path, 'w', encoding='utf-8') as f:
+    def __init__(self, file_name: str = "json_vacancies.json"):
+        path = f"../data/{file_name}"
+        self.__file_name = os.path.abspath(path)
+        if not os.path.exists(self.__file_name):
+            with open(self.__file_name, 'w', encoding='utf-8') as f:
                 json.dump([], f)
 
-    def add_vacancy(self, vacancy_data):
+    def load_data(self) -> list:
+        """Получение данных из файла"""
+
+        with open(self.__file_name, encoding='utf-8') as file:
+            json_data = json.load(file)
+        return json_data
+
+    def add_vacancy(self, vacancy_data: list):
         """Добавляет новую вакансию в файл"""
 
-        dict_vacancies = {
-            "name": vacancy_data.name,
-            "url": vacancy_data.url,
-            "salary": vacancy_data.salary,
-            "description": vacancy_data.description,
-            "requirements": vacancy_data.requirements
-        }
-        with open(self.path, 'r+', encoding='utf-8') as f:
+        with open(self.__file_name, 'r+', encoding='utf-8') as f:
             data = json.load(f)
-            data.append(dict_vacancies)
-            f.seek(0)
-            json.dump(data, f, ensure_ascii=False, indent=4)
+            for vacancy in vacancy_data:
+                if vacancy not in vacancy_data:
+                    data.append(vacancy)
+                    f.seek(0)
+                    json.dump(data, f, ensure_ascii=False, indent=4)
+                    f.truncate()
 
-    def get_vacancies(self, keyword):
+    def get_vacancies(self, keyword: str) -> list:
         """Возвращает вакансии по указанному критерию"""
 
         vacancy_filtered = []
-        with open(self.path, "r", encoding='utf-8') as file:
+        with open(self.__file_name, "r", encoding='utf-8') as file:
             vacancies = json.load(file)
             for vacancy in vacancies:
-                for value in vacancy.values():
-                    if keyword == value:
-                        vacancy_filtered.append(vacancy)
+                name = vacancy.get("name", "")
+                responsibility = vacancy.get("responsibility", "Обязанности не указаны")
+                requirements = vacancy.get("requirements", "Требования не указаны")
+
+                if keyword.lower() in name.lower() or keyword.lower() in responsibility.lower() or keyword.lower() in requirements.lower():
+                    vacancy_filtered.append(vacancy)
             return vacancy_filtered
 
-    def del_vacancy(self, name):
+    def del_vacancy(self, name: str):
         """Удаляет вакансии по указанному имени"""
 
         new_vacancies = []
-        with open(self.path, "r+", encoding='utf-8') as file:
+        with open(self.__file_name, "r+", encoding='utf-8') as file:
             vacancies = json.load(file)
             for vacancy in vacancies:
                 if vacancy.get("name") != name:
@@ -57,10 +64,29 @@ class JSONSaver(BaseFileSaver):
 
 
 # if __name__ == "__main__":
-    # vac1 = Vacancies("Тестировщик", "https://api.hh.ru/areas/26", {"from": 0, "to": 0, "currency": "RUB"}, "Какое-то описание", "Какие-то требования")
-    # save = JSONSaver()
-    # save.add_vacancy(vac1)
-    # vac1 = Vacancies("Разработчик", "https://api.hh.ru/areas/26", {"from": 0, "to": 0, "currency": "RUB"}, "Какое-то описание", "Какие-то требования")
-    # save = JSONSaver()
-    # save.add_vacancy(vac1)
-    # save.del_vacancy("Разработчик")
+#     vacancy_data_list = [
+#         {
+#             "name": "Senior Python Developer",
+#             "url": "https://hh.ru/vacancy/654321",
+#             "salary": {"from": 0, "to": 0, "currency": "RUB"},
+#             "snippet": {"responsibility": "Какое-то описание",
+#             "requirements": "Какие-то требования"}
+#         },
+#         {
+#             "name": "Senior Python Developer",
+#             "url": "https://hh.ru/vacancy/654321",
+#             "salary": {"from": 0, "to": 0, "currency": "RUB"},
+#             "snippet": {"responsibility": "Какое-то описание",
+#             "requirements": "Какие-то требования"}
+#         },
+#         {
+#             "name": "Senior Python Developer",
+#             "url": "https://hh.ru/vacancy/654321",
+#             "salary": None,
+#             "snippet": {"responsibility": "Какое-то описание",
+#             "requirements": "Какие-то требования"}
+#         },
+#     ]
+#     vac1 = Vacancies.get_vacancies_from_list(vacancy_data_list)
+#     save = JSONSaver()
+#     save.add_vacancy(vac1)

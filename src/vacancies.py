@@ -1,26 +1,54 @@
 class Vacancies:
     """Класс для работы с вакансиями"""
 
-    __vacancies_list = []
+    __list_vacancies = []
+    __slots__ = ("__name", "__url", "__salary", "__responsibility", "__requirements")
 
     def __init__(
             self,
             name: str,
             url: str,
             salary: dict | str = "Зарплата не указана",
-            description: str = "Описание не указано",
+            responsibility: str = "Описание не указано",
             requirements: str = "Требования не указаны"
     ):
         """Конструктор класса"""
 
         self.__name = name
         self.__url = url
-        self.__salary = self.__validate(salary)
-        self.__description = description
+        self.__salary = self.__validate_salary(salary)
+        self.__responsibility = responsibility
         self.__requirements = requirements
+        dict_vacancy = {
+            "name": self.__name,
+            "url": self.__url,
+            "salary": self.__salary,
+            "responsibility": self.__responsibility,
+            "requirements": self.requirements
+        }
+        self.__list_vacancies.append(dict_vacancy)
+
+    @classmethod
+    def get_vacancies_from_list(cls, vacancies_list):
+        """Получение вакансий из списка"""
+
+        for vacancy in vacancies_list:
+            url = vacancy.get("url") if vacancy.get("url") else vacancy.get("alternate_url")
+            salary = cls.__validate_salary(vacancy.get("salary"))
+            responsibility = vacancy["snippet"].get("responsibility", "Обязанности не указаны")
+            requirements = vacancy["snippet"].get("requirements", "Требования не указаны")
+
+            cls(
+                name=vacancy.get("name", "Не указано"),
+                url=url,
+                salary=salary,
+                responsibility=responsibility if responsibility is not None else "Не указано",
+                requirements=requirements
+            )
+        return cls.__list_vacancies
 
     @staticmethod
-    def __validate(salary):
+    def __validate_salary(salary) -> dict:
         """Метод валидации зарплаты"""
 
         if salary is None or salary == "Зарплата не указана":
@@ -28,7 +56,7 @@ class Vacancies:
         else:
             return {"from": salary.get("from"), "to": salary.get("to"), "currency": salary.get("currency")}
 
-    def __ge__(self, other):
+    def __ge__(self, other) -> bool:
         """Метод сравнений вакансий по зарплате"""
 
         if self.__salary.get("to") is None or other.__salary.get("to") is None:
@@ -40,9 +68,15 @@ class Vacancies:
             avg_other_salary = (other.__salary.get("from") + other.__salary.get("to")) // 2
             return avg_self_salary >= avg_other_salary
 
-    def __str__(self):
-        return (f"{self.__name} - {self.__url}. Зарплата: {self.__salary}. Описание: {self.__description}. "
+    def __str__(self) -> str:
+        return (f"{self.__name} - {self.__url}. Зарплата: {self.__salary}. Описание: {self.__responsibility}. "
                 f"Требования: {self.__requirements}.")
+
+    @classmethod
+    def list_vacancies(cls):
+        """Метод для получения всех вакансий"""
+
+        return cls.__list_vacancies
 
     @property
     def name(self):
@@ -57,8 +91,8 @@ class Vacancies:
         return self.__salary
 
     @property
-    def description(self):
-        return self.__description
+    def responsibility(self):
+        return self.__responsibility
 
     @property
     def requirements(self):
