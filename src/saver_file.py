@@ -9,7 +9,8 @@ class JSONSaver(BaseFileSaver):
     """Класс для работы с файлом JSON"""
 
     def __init__(self, file_name: str = "json_vacancies.json"):
-        path = f"../data/{file_name}"
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(current_dir, f"../data/{file_name}.json")
         self.__file_name = os.path.abspath(path)
         if not os.path.exists(self.__file_name):
             with open(self.__file_name, 'w', encoding='utf-8') as f:
@@ -25,14 +26,14 @@ class JSONSaver(BaseFileSaver):
     def add_vacancy(self, vacancy_data: list):
         """Добавляет новую вакансию в файл"""
 
-        with open(self.__file_name, 'r+', encoding='utf-8') as f:
+        with open(self.__file_name, 'r', encoding='utf-8') as f:
             data = json.load(f)
             for vacancy in vacancy_data:
-                if vacancy not in vacancy_data:
+                if vacancy not in data:
                     data.append(vacancy)
-                    f.seek(0)
-                    json.dump(data, f, ensure_ascii=False, indent=4)
-                    f.truncate()
+        with open(self.__file_name, "w", encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+            f.truncate()
 
     def get_vacancies(self, keyword: str) -> list:
         """Возвращает вакансии по указанному критерию"""

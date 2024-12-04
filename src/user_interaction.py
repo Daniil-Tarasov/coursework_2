@@ -24,5 +24,5 @@ def user_interaction():
     for vacancy in filtered_vacancies:
         print(f"{vacancy["name"]} - Зарплата: от {vacancy['salary']["from"]} до {vacancy['salary']["to"]}. {vacancy["responsibility"]}. {vacancy["requirements"]}")
 
-if __name__ == "__main__":
-    user_interaction()
+# if __name__ == "__main__":
+#     user_interaction()
