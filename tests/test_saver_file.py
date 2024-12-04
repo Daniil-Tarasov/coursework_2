@@ -1,5 +1,4 @@
-import os
-from unittest.mock import patch, mock_open
+from unittest.mock import mock_open, patch
 
 from src.saver_file import JSONSaver
 
@@ -10,7 +9,11 @@ def test_load_data(mock_file):
     assert data.load_data() == [{"test1": "test", "test": "test"}]
 
 
-@patch("builtins.open", new_callable=mock_open, read_data='[{"name": "test", "responsibility": "somthing", "requirements": "тест"}]')
+@patch(
+    "builtins.open",
+    new_callable=mock_open,
+    read_data='[{"name": "test", "responsibility": "somthing", "requirements": "тест"}]',
+)
 def test_get_vacancies(mock_file):
     data = JSONSaver()
     assert data.get_vacancies("test") == [{"name": "test", "responsibility": "somthing", "requirements": "тест"}]

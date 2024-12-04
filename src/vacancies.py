@@ -5,12 +5,12 @@ class Vacancies:
     __slots__ = ("__name", "__url", "__salary", "__responsibility", "__requirements")
 
     def __init__(
-            self,
-            name: str,
-            url: str,
-            salary: dict | str = "Зарплата не указана",
-            responsibility: str = "Описание не указано",
-            requirements: str = "Требования не указаны"
+        self,
+        name: str,
+        url: str,
+        salary: dict | str = "Зарплата не указана",
+        responsibility: str = "Описание не указано",
+        requirements: str = "Требования не указаны",
     ):
         """Конструктор класса"""
 
@@ -24,7 +24,7 @@ class Vacancies:
             "url": self.__url,
             "salary": self.__salary,
             "responsibility": self.__responsibility,
-            "requirements": self.requirements
+            "requirements": self.requirements,
         }
         self.__list_vacancies.append(dict_vacancy)
 
@@ -43,7 +43,7 @@ class Vacancies:
                 url=url,
                 salary=salary,
                 responsibility=responsibility if responsibility is not None else "Не указано",
-                requirements=requirements
+                requirements=requirements,
             )
         return cls.__list_vacancies
 
@@ -69,8 +69,10 @@ class Vacancies:
             return avg_self_salary >= avg_other_salary
 
     def __str__(self) -> str:
-        return (f"{self.__name} - {self.__url}. Зарплата: {self.__salary}. Описание: {self.__responsibility}. "
-                f"Требования: {self.__requirements}.")
+        return (
+            f"{self.__name} - {self.__url}. Зарплата: {self.__salary}. Описание: {self.__responsibility}. "
+            f"Требования: {self.__requirements}."
+        )
 
     @classmethod
     def list_vacancies(cls):

@@ -2,6 +2,7 @@ import json
 import os
 
 from src.base_file_saver import BaseFileSaver
+
 # from src.vacancies import Vacancies
 
 
@@ -13,25 +14,25 @@ class JSONSaver(BaseFileSaver):
         path = os.path.join(current_dir, f"../data/{file_name}.json")
         self.__file_name = os.path.abspath(path)
         if not os.path.exists(self.__file_name):
-            with open(self.__file_name, 'w', encoding='utf-8') as f:
+            with open(self.__file_name, "w", encoding="utf-8") as f:
                 json.dump([], f)
 
     def load_data(self) -> list:
         """Получение данных из файла"""
 
-        with open(self.__file_name, encoding='utf-8') as file:
+        with open(self.__file_name, encoding="utf-8") as file:
             json_data = json.load(file)
         return json_data
 
     def add_vacancy(self, vacancy_data: list):
         """Добавляет новую вакансию в файл"""
 
-        with open(self.__file_name, 'r', encoding='utf-8') as f:
+        with open(self.__file_name, "r", encoding="utf-8") as f:
             data = json.load(f)
             for vacancy in vacancy_data:
                 if vacancy not in data:
                     data.append(vacancy)
-        with open(self.__file_name, "w", encoding='utf-8') as f:
+        with open(self.__file_name, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
             f.truncate()
 
@@ -39,14 +40,18 @@ class JSONSaver(BaseFileSaver):
         """Возвращает вакансии по указанному критерию"""
 
         vacancy_filtered = []
-        with open(self.__file_name, "r", encoding='utf-8') as file:
+        with open(self.__file_name, "r", encoding="utf-8") as file:
             vacancies = json.load(file)
             for vacancy in vacancies:
                 name = vacancy.get("name", "")
                 responsibility = vacancy.get("responsibility", "Обязанности не указаны")
                 requirements = vacancy.get("requirements", "Требования не указаны")
 
-                if keyword.lower() in name.lower() or keyword.lower() in responsibility.lower() or keyword.lower() in requirements.lower():
+                if (
+                    keyword.lower() in name.lower()
+                    or keyword.lower() in responsibility.lower()
+                    or keyword.lower() in requirements.lower()
+                ):
                     vacancy_filtered.append(vacancy)
             return vacancy_filtered
 
@@ -54,7 +59,7 @@ class JSONSaver(BaseFileSaver):
         """Удаляет вакансии по указанному имени"""
 
         new_vacancies = []
-        with open(self.__file_name, "r+", encoding='utf-8') as file:
+        with open(self.__file_name, "r+", encoding="utf-8") as file:
             vacancies = json.load(file)
             for vacancy in vacancies:
                 if vacancy.get("name") != name:
