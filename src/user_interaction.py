@@ -1,5 +1,6 @@
 from src.hh_api import HHApi
 from src.saver_file import JSONSaver
+from src.utils import compare_salaries
 from src.vacancies import Vacancies
 
 
@@ -27,6 +28,15 @@ def user_interaction():
         print(
             f"{vacancy["name"]} - Зарплата: от {vacancy['salary']["from"]} до {vacancy['salary']["to"]}. {vacancy["responsibility"]}. {vacancy["requirements"]}"
         )
+    question = input("Желаете сравнить 2 вакансии по зарплате?(да/нет) ")
+    if question.lower() == "да":
+        name1 = input("Укажите название первой вакансии ")
+        name2 = input("Укажите название второй вакансии ")
+        result = compare_salaries(vacancies, name1, name2)
+        if result:
+            print("Зарплата первой вакансии больше")
+        else:
+            print("Зарплата во второй вакансии больше")
 
 
 # if __name__ == "__main__":

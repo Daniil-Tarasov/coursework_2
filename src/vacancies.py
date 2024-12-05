@@ -54,7 +54,7 @@ class Vacancies:
         if salary is None or salary == "Зарплата не указана":
             return {"from": 0, "to": 0}
         else:
-            return {"from": salary.get("from"), "to": salary.get("to"), "currency": salary.get("currency")}
+            return {"from": salary.get("from", "не указано"), "to": salary.get("to", "не указано"), "currency": salary.get("currency", "не указан")}
 
     def __ge__(self, other) -> bool:
         """Метод сравнений вакансий по зарплате"""

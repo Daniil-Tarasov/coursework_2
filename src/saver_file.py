@@ -62,7 +62,7 @@ class JSONSaver(BaseFileSaver):
         with open(self.__file_name, "r+", encoding="utf-8") as file:
             vacancies = json.load(file)
             for vacancy in vacancies:
-                if vacancy.get("name") != name:
+                if vacancy.get("name").lower() != name.lower():
                     new_vacancies.append(vacancy)
             file.seek(0)
             file.truncate()
