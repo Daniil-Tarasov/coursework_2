@@ -12,6 +12,8 @@ vac2 = Vacancies.get_vacancies_from_list(
     ]
 )
 
+vac1.clear_list()
+
 
 def test_init_vacancies():
     assert vac1.name == "Тестировщик"
@@ -22,6 +24,7 @@ def test_init_vacancies():
 
 
 def test_get_vacancies_from_list():
+    vac1.clear_list()
     assert vac2 == [
         {
             "name": "Тестировщик",
@@ -52,20 +55,6 @@ def test_validate_data():
         ]
     )
     assert vac3 == [
-        {
-            "name": "Тестировщик",
-            "url": "https://hh.ru/",
-            "salary": {"from": 1, "to": 2, "currency": "RUB"},
-            "responsibility": "Как-то",
-            "requirements": "Что-то",
-        },
-        {
-            "name": "Разработчик",
-            "url": "https://hh.ru/",
-            "salary": {"from": 1, "to": 2, "currency": "RUB"},
-            "responsibility": "разрабатывать",
-            "requirements": "жив",
-        },
         {
             "name": "Разработчик",
             "url": "https://hh.ru/",
