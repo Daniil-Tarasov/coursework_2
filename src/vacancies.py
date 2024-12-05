@@ -29,7 +29,7 @@ class Vacancies:
         self.__list_vacancies.append(dict_vacancy)
 
     @classmethod
-    def get_vacancies_from_list(cls, vacancies_list):
+    def get_vacancies_from_list(cls, vacancies_list: list) -> list:
         """Получение вакансий из списка"""
 
         for vacancy in vacancies_list:
@@ -48,7 +48,7 @@ class Vacancies:
         return cls.__list_vacancies
 
     @staticmethod
-    def __validate_salary(salary) -> dict:
+    def __validate_salary(salary: dict) -> dict:
         """Метод валидации зарплаты"""
 
         if salary is None or salary == "Зарплата не указана":

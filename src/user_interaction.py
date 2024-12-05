@@ -4,7 +4,7 @@ from src.utils import compare_salaries
 from src.vacancies import Vacancies
 
 
-def user_interaction():
+def user_interaction() -> None:
     """Функция для взаимодействия с пользователем"""
 
     keyword = input("Введите поисковый запрос: ")

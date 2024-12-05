@@ -24,7 +24,7 @@ class JSONSaver(BaseFileSaver):
             json_data = json.load(file)
         return json_data
 
-    def add_vacancy(self, vacancy_data: list):
+    def add_vacancy(self, vacancy_data: list) -> None:
         """Добавляет новую вакансию в файл"""
 
         with open(self.__file_name, "r", encoding="utf-8") as f:
@@ -55,7 +55,7 @@ class JSONSaver(BaseFileSaver):
                     vacancy_filtered.append(vacancy)
             return vacancy_filtered
 
-    def del_vacancy(self, name: str):
+    def del_vacancy(self, name: str) -> None:
         """Удаляет вакансии по указанному имени"""
 
         new_vacancies = []

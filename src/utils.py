@@ -1,7 +1,7 @@
 from src.vacancies import Vacancies
 
 
-def compare_salaries(vacancies: list, name1: str, name2: str):
+def compare_salaries(vacancies: list, name1: str, name2: str) -> bool:
     """Функция для сравнения вакансий по зарплате"""
 
     vacancy_dict1 = {}
