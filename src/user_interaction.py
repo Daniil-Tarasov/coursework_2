@@ -9,7 +9,7 @@ def user_interaction() -> None:
 
     keyword = input("Введите поисковый запрос: ")
     print("Идёт поиск... ")
-    hh = HHApi(file_worker="../data/vacancies.json")
+    hh = HHApi()
     vacancies = hh.load_vacancies(keyword)  # получаем вакансии
     vacancies = Vacancies.get_vacancies_from_list(vacancies)  # записываем вакансии в класс Vacancies
     data = JSONSaver()
@@ -39,5 +39,5 @@ def user_interaction() -> None:
             print("Зарплата во второй вакансии больше")
 
 
-# if __name__ == "__main__":
-#     user_interaction()
+if __name__ == "__main__":
+    user_interaction()
